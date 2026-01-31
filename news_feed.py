@@ -1,5 +1,6 @@
 import json
 import os
+import re
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
 
@@ -48,10 +49,17 @@ def fetch_all_news():
                 published_str = entry.get("published", "")
                 published_dt = parse_date(published_str)
 
+                # 뉴스 요약 가져오기
+                summary = entry.get("summary") or entry.get("description") or ""
+                # HTML 태그 제거
+                summary = re.sub(r'<[^>]+>', '', summary).strip()
+                summary = summary[:1000] if summary else ""  # 최대 1000자
+
                 all_news.append({
                     "id": news_id,
                     "title": entry.get("title", "제목 없음"),
                     "link": entry.get("link", ""),
+                    "summary": summary,
                     "published": published_str,
                     "published_dt": published_dt,
                     "source": feed_name
@@ -75,7 +83,7 @@ def send_to_discord(webhook_url, embed):
     return response.status_code == 204
 
 
-def create_embed(title, url, source_name, published=None):
+def create_embed(title, url, source_name, summary=""):
     """디스코드 임베드 메시지를 생성합니다."""
     embed = {
         "title": title[:256],
@@ -84,8 +92,8 @@ def create_embed(title, url, source_name, published=None):
         "footer": {"text": source_name},
         "timestamp": datetime.now(timezone.utc).isoformat()
     }
-    if published:
-        embed["description"] = f"📅 {published}"
+    if summary:
+        embed["description"] = summary[:4096]  # 디스코드 제한
     return embed
 
 
@@ -110,7 +118,7 @@ def main():
             news["title"],
             news["link"],
             news["source"],
-            news["published"]
+            news["summary"]
         )
 
         if send_to_discord(DISCORD_WEBHOOK_URL, embed):
