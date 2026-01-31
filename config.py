@@ -9,12 +9,8 @@ DISCORD_WEBHOOK_URL = os.environ.get(
 # 구독할 RSS 피드 목록
 RSS_FEEDS = [
     {
-        "name": "NYTimes",
-        "url": "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml"
-    },
-    {
-        "name": "CNN",
-        "url": "http://rss.cnn.com/rss/edition.rss"
+        "name": "Korea Herald",
+        "url": "https://www.koreaherald.com/rss"
     },
 ]
 
