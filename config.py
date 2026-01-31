@@ -10,7 +10,7 @@ DISCORD_WEBHOOK_URL = os.environ.get(
 RSS_FEEDS = [
     {
         "name": "Korea Herald",
-        "url": "https://www.koreaherald.com/rss"
+        "url": "https://www.koreaherald.com/rss/newsAll"
     },
 ]
 
