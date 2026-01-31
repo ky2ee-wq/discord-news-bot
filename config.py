@@ -6,23 +6,15 @@ DISCORD_WEBHOOK_URL = os.environ.get(
     "YOUR_WEBHOOK_URL_HERE"  # 로컬 테스트시 여기에 입력
 )
 
-# 구독할 RSS 피드 목록 (텍스트 기사 위주)
+# 구독할 RSS 피드 목록
 RSS_FEEDS = [
     {
-        "name": "AP News",
-        "url": "https://apnews.com/world-news.rss"
+        "name": "NYTimes",
+        "url": "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml"
     },
     {
-        "name": "NYTimes World",
-        "url": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml"
-    },
-    {
-        "name": "The Guardian",
-        "url": "https://www.theguardian.com/world/rss"
-    },
-    {
-        "name": "Al Jazeera",
-        "url": "https://www.aljazeera.com/xml/rss/all.xml"
+        "name": "CNN",
+        "url": "http://rss.cnn.com/rss/edition.rss"
     },
 ]
 
