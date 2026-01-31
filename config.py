@@ -6,29 +6,24 @@ DISCORD_WEBHOOK_URL = os.environ.get(
     "YOUR_WEBHOOK_URL_HERE"  # 로컬 테스트시 여기에 입력
 )
 
-# 구독할 RSS 피드 목록
+# 구독할 RSS 피드 목록 (텍스트 기사 위주)
 RSS_FEEDS = [
     {
-        "name": "BBC News",
-        "url": "http://feeds.bbci.co.uk/news/rss.xml"
+        "name": "AP News",
+        "url": "https://apnews.com/world-news.rss"
     },
     {
-        "name": "CNN",
-        "url": "http://rss.cnn.com/rss/edition.rss"
-    },
-    {
-        "name": "NPR News",
-        "url": "https://feeds.npr.org/1001/rss.xml"
+        "name": "NYTimes World",
+        "url": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml"
     },
     {
         "name": "The Guardian",
         "url": "https://www.theguardian.com/world/rss"
     },
-    # 기술 뉴스가 필요하면 아래 주석 해제
-    # {
-    #     "name": "TechCrunch",
-    #     "url": "https://techcrunch.com/feed/"
-    # },
+    {
+        "name": "Al Jazeera",
+        "url": "https://www.aljazeera.com/xml/rss/all.xml"
+    },
 ]
 
 # 가져올 뉴스 개수 (전체 피드에서 최신순)
