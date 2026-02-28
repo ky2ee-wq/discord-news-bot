@@ -4,7 +4,8 @@ import re
 from datetime import datetime, timezone
 
 import feedparser
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 import requests
 import yfinance as yf
 
@@ -190,15 +191,13 @@ def generate_tweets(system_prompt, user_prompt):
     """Gemini API를 호출하여 트윗을 생성합니다."""
     print("  Gemini로 트윗 생성 중...")
 
-    genai.configure(api_key=GEMINI_API_KEY)
-    model = genai.GenerativeModel(
-        model_name=GEMINI_MODEL,
-        system_instruction=system_prompt,
-    )
+    client = genai.Client(api_key=GEMINI_API_KEY)
 
-    response = model.generate_content(
-        user_prompt,
-        generation_config=genai.types.GenerationConfig(
+    response = client.models.generate_content(
+        model=GEMINI_MODEL,
+        contents=user_prompt,
+        config=types.GenerateContentConfig(
+            system_instruction=system_prompt,
             temperature=0.8,
             max_output_tokens=1500,
         ),
