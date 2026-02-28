@@ -1,8 +1,8 @@
 import os
 
-# OpenAI API 설정
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "YOUR_OPENAI_API_KEY_HERE")
-OPENAI_MODEL = "gpt-4o-mini"
+# Google Gemini API 설정
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "YOUR_GEMINI_API_KEY_HERE")
+GEMINI_MODEL = "gemini-2.0-flash"
 
 # 디스코드 웹훅 URL
 DISCORD_WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL", "YOUR_WEBHOOK_URL_HERE")

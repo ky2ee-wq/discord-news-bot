@@ -4,17 +4,17 @@ import re
 from datetime import datetime, timezone
 
 import feedparser
+import google.generativeai as genai
 import requests
 import yfinance as yf
-from openai import OpenAI
 
 from stock_config import (
     DISCORD_WEBHOOK_URL,
     FEAR_GREED_URL,
     FINANCIAL_RSS_FEEDS,
+    GEMINI_API_KEY,
+    GEMINI_MODEL,
     INDICES,
-    OPENAI_API_KEY,
-    OPENAI_MODEL,
     SENT_TWEETS_FILE,
     STOCKS,
     TWEET_COUNT,
@@ -187,22 +187,24 @@ def build_gpt_prompt(market_data, fear_greed, headlines):
 
 
 def generate_tweets(system_prompt, user_prompt):
-    """OpenAI API를 호출하여 트윗을 생성합니다."""
-    print("  GPT로 트윗 생성 중...")
+    """Gemini API를 호출하여 트윗을 생성합니다."""
+    print("  Gemini로 트윗 생성 중...")
 
-    client = OpenAI(api_key=OPENAI_API_KEY)
-
-    response = client.chat.completions.create(
-        model=OPENAI_MODEL,
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt},
-        ],
-        temperature=0.8,
-        max_tokens=1500,
+    genai.configure(api_key=GEMINI_API_KEY)
+    model = genai.GenerativeModel(
+        model_name=GEMINI_MODEL,
+        system_instruction=system_prompt,
     )
 
-    content = response.choices[0].message.content.strip()
+    response = model.generate_content(
+        user_prompt,
+        generation_config=genai.types.GenerationConfig(
+            temperature=0.8,
+            max_output_tokens=1500,
+        ),
+    )
+
+    content = response.text.strip()
 
     # JSON 블록에서 배열 추출
     json_match = re.search(r'\[.*\]', content, re.DOTALL)
@@ -283,8 +285,8 @@ def main():
         print("오류: DISCORD_WEBHOOK_URL을 설정해주세요.")
         return
 
-    if OPENAI_API_KEY == "YOUR_OPENAI_API_KEY_HERE":
-        print("오류: OPENAI_API_KEY를 설정해주세요.")
+    if GEMINI_API_KEY == "YOUR_GEMINI_API_KEY_HERE":
+        print("오류: GEMINI_API_KEY를 설정해주세요.")
         return
 
     # 1. 데이터 수집
