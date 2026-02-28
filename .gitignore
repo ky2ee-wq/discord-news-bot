@@ -1,4 +1,5 @@
 sent_news.json
+sent_tweets.json
 __pycache__/
 *.pyc
 .env

@@ -1,24 +1,24 @@
-name: Daily News Feed
+name: Stock Tweet Generator
 
 on:
   schedule:
-    # 매일 UTC 11:00 (한국시간 20:00)
-    - cron: '0 11 * * *'
+    # 평일 UTC 21:00 (미국 장 마감 후) 실행
+    - cron: '0 21 * * 1-5'
   workflow_dispatch:  # 수동 실행 가능
 
 jobs:
-  send-news:
+  generate-tweets:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Restore sent news cache
+      - name: Restore sent tweets cache
         uses: actions/cache/restore@v4
         with:
-          path: sent_news.json
-          key: sent-news-
-          restore-keys: sent-news-
+          path: sent_tweets.json
+          key: sent-tweets-
+          restore-keys: sent-tweets-
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -28,13 +28,14 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run news feed
+      - name: Generate and send tweets
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: python news_feed.py
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python stock_tweets.py
 
-      - name: Save sent news cache
+      - name: Save sent tweets cache
         uses: actions/cache/save@v4
         with:
-          path: sent_news.json
-          key: sent-news-${{ github.run_id }}
+          path: sent_tweets.json
+          key: sent-tweets-${{ github.run_id }}
